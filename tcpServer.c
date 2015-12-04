@@ -6,7 +6,7 @@ int main(int argc, char *argv[])
 	int sockfd, connfd, status, val;
 	pthread_t thread_id;
 	char filename[50];
-	sprintf(filename, "patients/patient-%ld.txt", time(NULL));
+
 	sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 
 	val = 1;
@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
 	}
 
 	sAddr.sin_family = AF_INET;
-	sAddr.sin_port = htons(2000);
+	sAddr.sin_port = htons(443);
 	sAddr.sin_addr.s_addr = INADDR_ANY;
 
 	status = bind(sockfd, (struct sockaddr *) &sAddr, sizeof(sAddr));
@@ -39,6 +39,9 @@ int main(int argc, char *argv[])
 		}
 		struct arg_struct args;
 		args.conId = connfd;
+
+
+		sprintf(filename, "patients/patient-%lld.txt", getCurrentTimeInMs());
 		args.filename = filename;
 		printf("client connected to child thread %i with pid %i.\n", (int)pthread_self(), getpid());
 		status = pthread_create(&thread_id, NULL, process_data, (void*)&args);
@@ -49,6 +52,12 @@ int main(int argc, char *argv[])
 		sched_yield();
 	}
 	pthread_join (thread_id, NULL);
+}
+
+long long getCurrentTimeInMs() {
+	struct timeval te;
+	gettimeofday(&te, NULL); // get current time
+	return te.tv_sec * 1000LL + te.tv_usec / 1000;
 }
 
 //thread to handle each call to the server, which takes a void pointer of arguments
@@ -104,15 +113,12 @@ ssize_t readline(int fd, void *vptr, size_t maxlen)
 {
 	int n, rc;
 	char c, *ptr;
-	printf("trying to read\n");
 	ptr = vptr;
 	for (n = 1; n < maxlen; n++) {
 		if ( (rc = read(fd, &c, 1)) == 1) {
 			if (c == '\b') {
-				printf("found a b\n");
 				return 0;
 			} else if (c == '\r') {
-				printf("found a r\n");
 				break;
 			} else {
 				*ptr++ = c;
@@ -144,7 +150,6 @@ int getOctaveProgramInfo(const char* fileLoc, char* response)
 		perror("fork");
 		return -1;
 	} else if (pid == 0) {
-		printf("attempting to read %s\n", fileLoc);
 		while ((dup2(filedes[1], STDOUT_FILENO) == -1) && (errno == EINTR)) {}
 		close(filedes[1]);
 		close(filedes[0]);
@@ -175,7 +180,6 @@ int getOctaveProgramInfo(const char* fileLoc, char* response)
 int writeData(const char* filename, char* contents)
 {
 	FILE *f = fopen(filename, "a+");
-	printf("writing to %s\n", filename);
 	if (f == NULL)
 	{
 		printf("Error opening file %s\n", filename);

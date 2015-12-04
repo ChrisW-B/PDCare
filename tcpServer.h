@@ -10,6 +10,7 @@
 #include <sys/ioctl.h>
 #include <pthread.h>
 #include <time.h>
+#include <sys/time.h>
 
 #define MAXLINE 8192
 #define LISTENQ 16    /* max size of queue */
@@ -23,4 +24,5 @@ int writeData(const char*, char*);
 int getOctaveProgramInfo(const char*, char*);
 ssize_t readline(int, void *, size_t);
 void* process_data(void *);
+long long getCurrentTimeInMs();
 int main(int, char *[]);

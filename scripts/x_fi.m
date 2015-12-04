@@ -40,6 +40,7 @@ function res = x_fi(data,SR,stepSize)
 
         % Compute FFT
         Y = fft(y,NFFT);
+        Y
         Pyy = Y.* conj(Y) / NFFT;
         
         % --- calculate sumLocoFreeze and freezeIndex ---
@@ -56,12 +57,6 @@ function res = x_fi(data,SR,stepSize)
         i = i + 1;
         %break;
     end
-
-freezeIndex
-sumLocoFreeze
-time
-
-
 res.sum = sumLocoFreeze;
 res.quot = freezeIndex;
 res.time = time;
