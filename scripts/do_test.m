@@ -25,7 +25,6 @@ isubject=1;
 newData = [];
 
 dataSize = size(data);
-dataSize
 counter = 1;
 i = 1;
 while i <= dataSize(1)
@@ -47,7 +46,7 @@ res = givenFFT_x_fi(newData,SR,stepSize);
 res.quot(res.sum < TH.power) = 0;
 
 % Classification
-lframe = (res.quot>TH.freeze(2))';
+lframe = (res.quot>TH.freeze(isubject))';
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -61,5 +60,3 @@ lframe = (res.quot>TH.freeze(2))';
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 printf('%1.0f\n', lframe);
-
-

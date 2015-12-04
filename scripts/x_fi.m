@@ -40,9 +40,7 @@ function res = x_fi(data,SR,stepSize)
 
         % Compute FFT
         Y = fft(y,NFFT);
-
         Pyy = Y.* conj(Y) / NFFT;
-
         
         % --- calculate sumLocoFreeze and freezeIndex ---
         areaLocoBand   = x_numericalIntegration( Pyy(f_nr_LBs:f_nr_LBe), SR );
@@ -59,7 +57,9 @@ function res = x_fi(data,SR,stepSize)
         %break;
     end
 
-
+freezeIndex
+sumLocoFreeze
+time
 
 
 res.sum = sumLocoFreeze;
