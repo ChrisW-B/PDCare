@@ -30,7 +30,7 @@ counter = 1;
 i = 1;
 while i <= dataSize(1)
 	j = 1;
-	if(i+1<dataSize(1))
+	if i+1 <= dataSize(1)
 		while j <= dataSize(2)
 			newData(counter, j) = complex(data(i, j), data(i+1, j));
 			j = j + 1;
