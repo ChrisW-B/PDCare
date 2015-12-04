@@ -22,14 +22,30 @@ isensor = 0;
 iaxis=1;
 isubject=1;
 %%%%%%%%%%%%%%%%%%%
+newData = [];
 
+dataSize = size(data);
+dataSize
+counter = 1;
+i = 1;
+while i <= dataSize(1)
+	j = 1;
+	if(i+1<dataSize(1))
+		while j <= dataSize(2)
+			newData(counter, j) = complex(data(i, j), data(i+1, j));
+			j = j + 1;
+		end
+	end
+	counter = counter + 1;
+	i = i + 2;
+end
 % Moore's algorithm
-res = givenFFT_x_fi(data,SR,stepSize);
+res = givenFFT_x_fi(newData,SR,stepSize);
  % res = x_fi(data(:,2+0*3+1),SR,stepSize);
 % Extension of Baechlin to handle low-enery situations
 % (e.g. standing)
 res.quot(res.sum < TH.power) = 0;
-res.sum
+
 % Classification
 lframe = (res.quot>TH.freeze(2))';
 
@@ -44,6 +60,6 @@ lframe = (res.quot>TH.freeze(2))';
 % experiment with label 0=no freeze, 1=freeze
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% printf('%1.0f\n', lframe);
+printf('%1.0f\n', lframe);
 
 
