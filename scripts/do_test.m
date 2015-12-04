@@ -6,27 +6,21 @@ offDelay=2;         % Evaluation delay in seconds: tolerates delay after detecti
 onDelay=2;          % Evaluation delay in seconds: tolerates delay before detecting
 
 % Parameters to optimize per sensor placement/orientation and subject
-%TH.freeze  =  3 ;
-% subject [1 3 7 8 10] threshold 3
-TH.freeze  =  [3 1.5 3 1.5 1.5 1.5 3 3 1.5 3];
-%TH.freeze  =  [1.5 1.5 1.5 1.5 1.5 1.5 1.5 1.5 1.5 1.5];
-TH.power   = 2.^ 12 ;
-%TH.power   = 2.^ 11.5 ;
+TH.freeze  =  1.5;
+% TH.power   = 2.^ 12 ;
+TH.power   = 2.^ 11.5 ;
 
-
+% Imports data from a csv file located in the first argument
 data = importdata(filename);
-resrun=[0 0 0 0 0];
-%%%%%%%%%%%%%%%%%%
-%Temp for testing
-isensor = 0;
-iaxis=1;
-isubject=1;
-%%%%%%%%%%%%%%%%%%%
+
+%array to hold data converted into complex numbers
 newData = [];
 
-dataSize = size(data);
+dataSize = size(data); %2D array thats the size of the original data file
+
 counter = 1;
 i = 1;
+%for loop to merge the data back into complex numbers
 while i <= dataSize(1)
 	j = 1;
 	if i+1 <= dataSize(1)
@@ -38,25 +32,15 @@ while i <= dataSize(1)
 	counter = counter + 1;
 	i = i + 2;
 end
+
 % Moore's algorithm
 res = givenFFT_x_fi(newData,SR,stepSize);
- % res = x_fi(data(:,2+0*3+1),SR,stepSize);
+
 % Extension of Baechlin to handle low-enery situations
 % (e.g. standing)
 res.quot(res.sum < TH.power) = 0;
 
 % Classification
-lframe = (res.quot>TH.freeze(isubject))';
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% We do not want to compute performance on the "non experiment" part, 
-% e.g. when the sensors are attached on body or the user is not yet
-% doing the task. 
-% Therefore we remove the non-experiment parts, which correspond
-% to label '0'.
-% After transformation, there are only frames corresponding to the
-% experiment with label 0=no freeze, 1=freeze
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+lframe = (res.quot>TH.freeze)';
 
 printf('%1.0f\n', lframe);
