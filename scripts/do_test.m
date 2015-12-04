@@ -20,22 +20,23 @@ dataSize = size(data); % 2D array that's the size of the original data file
 
 counter = 1;
 i = 1;
-%for loop to merge the data back into complex numbers
-% while i <= dataSize(1)
-% 	j = 1;
-% 	if i+1 <= dataSize(1)
-% 		while j <= dataSize(2)
-% 			newData(counter, j) = complex(data(i, j), data(i+1, j));
-% 			j = j + 1;
-% 		end
-% 	end
-% 	counter = counter + 1;
-% 	i = i + 2;
-% end
+
+for loop to merge the data back into complex numbers
+while i <= dataSize(1)
+	j = 1;
+	if i+1 <= dataSize(1)
+		while j <= dataSize(2)
+			newData(counter, j) = complex(data(i, j), data(i+1, j));
+			j = j + 1;
+		end
+	end
+	counter = counter + 1;
+	i = i + 2;
+end
 
 % Moore's algorithm
-% res = givenFFT_x_fi(newData,SR,stepSize);
-res = x_fi(data(:,2+0*3+1),SR,stepSize); % for testing old data
+res = givenFFT_x_fi(newData,SR,stepSize);
+% res = x_fi(data(:,2+0*3+1),SR,stepSize); % for testing old data
 
 % Extension of Baechlin to handle low-enery situations
 % (e.g. standing)
