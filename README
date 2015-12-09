@@ -1,3 +1,18 @@
+PDCare Server:
+make using Makefile, run with ./pdCareServer
+
+This server accepts files in a CSV (comma separated value) format, and will not run correctly with other formats
+
+The server will then save the file in a "patients" folder for processing by Octave, and currently keeps the file for future use cases, such as a server side processing of a patients progress over time
+
+The Matlab/Octave code is all held within the Scripts folder
+
+The server will return a string of 1s and 0s, where 1 is a FoG event
+If there is a problem with the file, or otherwise an error, the server will return -1
+The server will not return any other values
+
+
+#########This program uses a modified version of the following project:########
 **** Daphnet Freezing of Gait Dataset in users with Parkinson's disease ****
 
 The Daphnet Freezing of Gait Dataset Freezing of Gait in users with Parkinson disease (hereafter Daphnet Freezing of Gait Dataset) is a dataset devised to benchmark automatic methods to recognize gait freeze from wearable acceleration sensors placed on legs and hip. The dataset was recorded in the lab with emphasis on generating many freeze events.

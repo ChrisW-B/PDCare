@@ -1,7 +1,6 @@
 CC = gcc
 CFLAGS = -Wall
-CLI = tcpClient
-SERVER = tcpServer
+SERVER = pdcareServer
 $(SERVER):  $(SERVER).o
 	$(CC) $(CFLAGS) -o $(SERVER) $(SERVER).o
 $(SERVER).o: $(SERVER).c
